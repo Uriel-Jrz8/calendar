@@ -1,5 +1,7 @@
 
-import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css'
 import { useAuthStore, useForm } from '../../hooks';
 import './login.css';
 
@@ -10,30 +12,42 @@ const loginFormFields = {
 }
 
 const registerFormFields = {
-    registerName:'',
-    registerEmail: '',
-    registerPassword: '',
-    registerPassword2:'',
+    registerName:'juan',
+    registerEmail: 'juan@google.com',
+    registerPassword: '123456',
+    registerPassword2:'123456',
 }
 
 
 export const LoginPage = () => {
 
-    const {startLogin} =useAuthStore();
-    const {loginEmail, loginPassword, onInputChange:onLoginInputChnge} = useForm( loginFormFields );
-    const {registerName,registerEmail, registerPassword, registerPassword2, onInputChange:onRegisterInputChange} = useForm(registerFormFields);
+    const { startLogin, errorMessage,startRegister } = useAuthStore();
+    const { loginEmail, loginPassword, onInputChange:onLoginInputChnge} = useForm( loginFormFields );
+    const { registerName,registerEmail, registerPassword, registerPassword2, onInputChange:onRegisterInputChange} = useForm(registerFormFields);
 
 
     const loginSubmit = (event) => {
         event.preventDefault();
-        startLogin({email: loginEmail, password:loginPassword});
+        startLogin( { email: loginEmail, password:loginPassword } );
         
     }
 
     const registerSubmit = (event) => {
         event.preventDefault();
-        console.log({registerName,registerEmail, registerPassword, registerPassword2})
+        if( registerPassword !== registerPassword2){
+            Swal.fire('Error en la Creación', 'Password diferentes', 'error');
+            return;
+        }
+        startRegister({name:registerName, email: registerEmail, password:registerPassword});
+        console.log( { registerName,registerEmail, registerPassword, registerPassword2 } )
     }
+
+    useEffect(() => { 
+        if( errorMessage !== undefined ){
+            Swal.fire('Error en la autenticación', errorMessage, 'error');
+        }
+    }, [ errorMessage ])
+
 
     return (
         <div className="container login-container">
