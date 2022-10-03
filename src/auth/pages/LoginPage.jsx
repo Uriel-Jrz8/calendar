@@ -7,15 +7,15 @@ import './login.css';
 
 
 const loginFormFields = {
-    loginEmail: 'uriel@gmail.com',
-    loginPassword: '123456',
+    loginEmail: '',
+    loginPassword: '',
 }
 
 const registerFormFields = {
-    registerName:'juan',
-    registerEmail: 'juan@google.com',
-    registerPassword: '123456',
-    registerPassword2:'123456',
+    registerName:'',
+    registerEmail: '',
+    registerPassword: '',
+    registerPassword2:'',
 }
 
 
